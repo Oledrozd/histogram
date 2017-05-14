@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Histogram</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body class="histo container">
+    <h1 class="text-center">Histogram</h1>
+
+    <label class="btn btn-default btn-file">
+        Set Image <input class="histo_file hidden" type="file" accept="image/jpeg,image/png">
+    </label>
+
+    <div class="histo_container row">
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <canvas class="canvas__image" width="400" height="300"></canvas>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <canvas class="canvas__histogram" width="400" height="300"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script src="scripts/index.js"></script>
+</body>
+</html>
