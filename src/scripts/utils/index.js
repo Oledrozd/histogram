@@ -15,7 +15,3 @@ export const getImageData = (ctx, width, height) => ctx.getImageData(DEFAULT_X, 
 export const renderImage = (ctx, image, width, height) => ctx.drawImage(image, DEFAULT_X, DEFAULT_Y, width, height);
 
 export const clearCanvas = (ctx, width, height) => ctx.clearRect(DEFAULT_X, DEFAULT_Y, width, height);
-
-export const clearChart = chart => chart && chart.destroy();
-
-export const setCanvasHeight = (canvas, height) => canvas.height = height;

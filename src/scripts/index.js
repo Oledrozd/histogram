@@ -1,20 +1,10 @@
 import {CHART_COLOR, CHART_LABEL, GRADATION_AMOUNT} from './constants';
-import {
-    getAverage,
-    getDefaultArray,
-    getLabels,
-    getImageData,
-    renderImage,
-    clearCanvas,
-    clearChart,
-    setCanvasHeight,
-    getRatio
-} from './utils';
+import {getAverage, getDefaultArray, getLabels, getImageData, renderImage, clearCanvas, getRatio} from './utils';
 import '../styles/style.css';
 
 const filePicker = document.querySelector('.histo_file');
-const chartCanvas = document.querySelector('.canvas__histogram');
-const imageCanvas = document.querySelector('.canvas__image');
+const histogram = document.querySelector('.canvas__histogram');
+const canvas = document.querySelector('.canvas__image');
 
 let chart = null;
 
@@ -30,6 +20,8 @@ const getPixelsBrightness = (imageData, step = 4) => {
 };
 
 const renderHistogram = (canvas, labels, data) => {
+    chart && chart.destroy();
+
     chart = new Chart(canvas, {
         type: 'bar',
         data: {
@@ -43,29 +35,26 @@ const renderHistogram = (canvas, labels, data) => {
     });
 };
 
-const setAppData = (imgCanvas, chartCanvas, imgData, chart) => {
-    const ctx = imgCanvas.getContext('2d');
-    const image = new Image();
+const drawHistogram = (image, ctx, canvas, histogram) => {
+    const labels = getLabels(GRADATION_AMOUNT);
 
-    image.src = imgData;
-    image.onload = () => {
-        const currCanvasHeight = image.height * getRatio(imgCanvas.width, image.width);
+    canvas.height = image.height * getRatio(canvas.width, image.width);
 
-        clearChart(chart);
-        clearCanvas(ctx, imgCanvas.width, imgCanvas.height);
-
-        setCanvasHeight(imgCanvas, currCanvasHeight);
-
-        renderImage(ctx, image, imgCanvas.width, imgCanvas.height);
-        renderHistogram(
-            chartCanvas,
-            getLabels(GRADATION_AMOUNT),
-            getPixelsBrightness(getImageData(ctx, image.width, image.height))
-        );
-    }
+    clearCanvas(ctx, canvas.width, canvas.height);
+    renderImage(ctx, image, canvas.width, canvas.height);
+    renderHistogram(histogram, labels, getPixelsBrightness(getImageData(ctx, canvas.width, canvas.height)));
 };
 
-const onFileLoad = event => setAppData(imageCanvas, chartCanvas, event.target.result, chart);
+const setAppData = (canvas, histogram, imgData) => {
+    const ctx = canvas.getContext('2d');
+    const image = new Image();
+    const onImageLoad = () => drawHistogram(image, ctx, canvas, histogram);
+
+    image.addEventListener('load', onImageLoad, false);
+    image.src = imgData;
+};
+
+const onFileLoad = event => setAppData(canvas, histogram, event.target.result);
 
 const readFile = event => {
     const FR = new FileReader();
